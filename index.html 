@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050507">
+
+  <title>Galaxy</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg: #050507;
+      --card: #101014;
+      --card2: #17171d;
+      --border: #25252d;
+      --text: #ffffff;
+      --muted: #92929d;
+      --purple: #8a2be2;
+      --pink: #ff2daa;
+      --blue: #00bfff;
+      --gradient: linear-gradient(135deg, #8a2be2, #ff2daa);
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      min-height: 100vh;
+      background:
+        radial-gradient(
+          circle at 15% 10%,
+          rgba(138, 43, 226, .13),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 90% 80%,
+          rgba(255, 45, 170, .09),
+          transparent 30%
+        ),
+        var(--bg);
+    }
+
+    /* =========================
+       SPLASH
+    ========================= */
+
+    #splash {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: #050507;
+      transition: opacity .6s ease, visibility .6s ease;
+    }
+
+    #splash.hide {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .splash-logo {
+      width: 115px;
+      height: 115px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 58px;
+      background: var(--gradient);
+      box-shadow:
+        0 0 35px rgba(138, 43, 226, .55),
+        0 0 90px rgba(255, 45, 170, .22);
+      animation: pulse 2s infinite;
+    }
+
+    .splash-title {
+      margin-top: 22px;
+      font-size: 38px;
+      font-weight: 800;
+      background: linear-gradient(
+        90deg,
+        #8a2be2,
+        #ff2daa,
+        #00bfff
+      );
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .splash-subtitle {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.07);
+      }
+    }
+
+    /* =========================
+       SCREEN SYSTEM
+    ========================= */
+
+    .screen {
+      display: none;
+      width: 100%;
+      min-height: 100vh;
+      padding: 25px 18px 100px;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    /* =========================
+       ONBOARDING
+    ========================= */
+
+    .onboarding {
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .planet {
+      width: 230px;
+      height: 230px;
+      border-radius: 50%;
+      margin: 0 auto 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 90px;
+      background:
+        radial-gradient(
+          circle at 35% 30%,
+          #ffffff,
+          #ff2daa 8%,
+          #8a2be2 35%,
+          #17101f 72%
+        );
+      box-shadow:
+        0 0 40px rgba(138, 43, 226, .65),
+        0 0 110px rgba(255, 45, 170, .22);
+    }
+
+    .onboarding h1 {
+      font-size: 30px;
+      margin-bottom: 15px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(
+        90deg,
+        #8a2be2,
+        #ff2daa
+      );
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .description {
+      max-width: 350px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin: 0 auto 28px;
+    }
+
+    .dots {
+      display: flex;
+      gap: 7px;
+      justify-content: center;
+      margin-bottom: 25px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 20px;
+      background: #444;
+      transition: .3s;
+    }
+
+    .dot.active {
+      width: 25px;
+      background: var(--gradient);
+    }
+
+    /* =========================
+       BUTTONS
+    ========================= */
+
+    .btn {
+      width: 100%;
+      border: 0;
+      border-radius: 16px;
+      padding: 16px;
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      background: var(--gradient);
+      box-shadow: 0 10px 30px rgba(138, 43, 226, .25);
+      transition: transform .2s;
+    }
+
+    .btn:active {
+      transform: scale(.97);
+    }
+
+    .btn.secondary {
+      margin-top: 12px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      box-shadow: none;
+    }
+
+    /* =========================
+       AUTH
+    ========================= */
+
+    .auth {
+      justify-content: center;
+    }
+
+    .auth-logo {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .mini-logo {
+      width: 75px;
+      height: 75px;
+      border-radius: 24px;
+      margin: 0 auto 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      background: var(--gradient);
+      box-shadow: 0 0 35px rgba(138, 43, 226, .35);
+    }
+
+    .auth-logo h1 {
+      font-size: 30px;
+    }
+
+    .auth-logo p {
+      margin-top: 8px;
+      color: var(--muted);
+    }
+
+    .auth-card {
+      background: rgba(16, 16, 20, .9);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 22px;
+    }
+
+    .auth-card h2 {
+      margin-bottom: 8px;
+      font-size: 24px;
+    }
+
+    .auth-card > p {
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      color: #bbb;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .input {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      outline: none;
+      background: #09090c;
+      color: white;
+      font-size: 15px;
+    }
+
+    .input:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(138, 43, 226, .12);
+    }
+
+    .auth-switch {
+      text-align: center;
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .auth-switch span {
+      color: var(--pink);
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* =========================
+       TOPBAR
+    ========================= */
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 22px;
+    }
+
+    .galaxy-title {
+      font-size: 27px;
+      font-weight: 800;
+      background: linear-gradient(
+        90deg,
+        #8a2be2,
+        #ff2daa,
+        #00bfff
+      );
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 9px;
+    }
+
+    .circle-btn {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--card);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    /* =========================
+       STORIES
+    ========================= */
+
+    .stories {
+      display: flex;
+      gap: 13px;
+      overflow-x: auto;
+      padding: 3px 0 22px;
+      scrollbar-width: none;
+    }
+
+    .stories::-webkit-scrollbar {
+      display: none;
+    }
+
+    .story {
+      min-width: 66px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .story-avatar {
+      width: 64px;
+      height: 64px;
+      padding: 3px;
+      border-radius: 50%;
+      background: var(--gradient);
+      margin-bottom: 6px;
+    }
+
+    .story-avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #202027;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 25px;
+    }
+
+    /* =========================
+       POSTS
+    ========================= */
+
+    .post {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .post-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px;
+    }
+
+    .avatar {
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .post-name {
+      font-weight: bold;
+    }
+
+    .post-time {
+      margin-top: 3px;
+      color: #777;
+      font-size: 11px;
+    }
+
+    .post-image {
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 70px;
+      background:
+        radial-gradient(
+          circle at 40% 40%,
+          #ff2daa,
+          transparent 10%
+        ),
+        radial-gradient(
+          circle at 60% 60%,
+          #8a2be2,
+          transparent 28%
+        ),
+        #08080d;
+    }
+
+    .post-text {
+      padding: 15px;
+      color: #ccc;
+      line-height: 1.7;
+    }
+
+    .post-actions {
+      display: flex;
+      justify-content: space-around;
+      padding: 13px;
+      border-top: 1px solid var(--border);
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    .action {
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .action:active {
+      transform: scale(.9);
+    }
+
+    .action.liked {
+      color: #ff3b81;
+    }
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 22px;
+    }
+
+    .search-box input {
+      flex: 1;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: white;
+      font-size: 15px;
+    }
+
+    .search-result {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .result-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .result-info {
+      flex: 1;
+    }
+
+    .result-info small {
+      color: var(--muted);
+    }
+
+    /* =========================
+       REELS
+    ========================= */
+
+    .reel {
+      position: relative;
+      height: 70vh;
+      min-height: 500px;
+      border-radius: 22px;
+      overflow: hidden;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: flex-end;
+      background:
+        radial-gradient(
+          circle at 50% 30%,
+          rgba(255, 45, 170, .7),
+          transparent 18%
+        ),
+        radial-gradient(
+          circle at 50% 65%,
+          rgba(138, 43, 226, .7),
+          transparent 35%
+        ),
+        #09090e;
+    }
+
+    .reel-content {
+      width: 100%;
+      padding: 22px;
+      background: linear-gradient(
+        transparent,
+        rgba(0, 0, 0, .9)
+      );
+    }
+
+    .reel-user {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .reel-description {
+      color: #ddd;
+      line-height: 1.6;
+    }
+
+    .reel-actions {
+      position: absolute;
+      left: 15px;
+      bottom: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .reel-action {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, .45);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    /* =========================
+       MESSAGES
+    ========================= */
+
+    .message {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .message-avatar {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 23px;
+    }
+
+    .message-info {
+      flex: 1;
+    }
+
+    .message-name {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .message-last {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .online {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #20d878;
+      display: inline-block;
+      margin-left: 5px;
+    }
+
+    /* =========================
+       PROFILE
+    ========================= */
+
+    .profile-header {
+      text-align: center;
+      padding: 15px 0 25px;
+    }
+
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      padding: 4px;
+      background: var(--gradient);
+      margin: 0 auto 15px;
+    }
+
+    .profile-avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #202027;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+
+    .profile-name {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .profile-username {
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .profile-bio {
+      color: #bbb;
+      margin: 12px auto;
+      max-width: 320px;
+      line-height: 1.6;
+    }
+
+    .profile-stats {
+      display: flex;
+      justify-content: center;
+      gap: 35px;
+      margin: 22px 0;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 20px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .profile-btn {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 13px;
+      background: var(--card);
+      color: white;
+    }
+
+    /* =========================
+       SETTINGS
+    ========================= */
+
+    .setting {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 17px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .setting-icon {
+      width: 43px;
+      height: 43px;
+      border-radius: 13px;
+      background: var(--card2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+    }
+
+    .setting-info {
+      flex: 1;
+    }
+
+    .setting-info strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .setting-info small {
+      color: var(--muted);
+    }
+
+    /* =========================
+       BOTTOM NAV
+    ========================= */
+
+    .bottom-nav {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 500;
+      height: 72px;
+      display: none;
+      align-items: center;
+      justify-content: space-around;
+      background: rgba(8, 8, 11, .95);
+      backdrop-filter: blur(18px);
+      border-top: 1px solid var(--border);
+    }
+
+    .bottom-nav.show {
+      display: flex;
+    }
+
+    .nav-item {
+      min-width: 55px;
+      text-align: center;
+      color: #777;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .nav-item span {
+      display: block;
+      font-size: 21px;
+      margin-bottom: 3px;
+    }
+
+    .nav-item.active {
+      color: var(--pink);
+    }
+
+    .create-btn {
+      width: 51px;
+      height: 51px;
+      margin-top: -24px;
+      border-radius: 17px;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 8px 28px rgba(138, 43, 226, .5);
+      cursor: pointer;
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 90px;
+      z-index: 10000;
+      transform: translate(-50%, 20px);
+      opacity: 0;
+      pointer-events: none;
+      padding: 12px 18px;
+      border-radius: 14px;
+      background: #222229;
+      border: 1px solid var(--border);
+      color: white;
+      transition: .3s;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    @media (min-width: 700px) {
+      .screen {
+        max-width: 600px;
+        margin: auto;
+      }
+
+      .bottom-nav {
+        left: 50%;
+        right: auto;
+        width: 600px;
+        transform: translateX(-50%);
+        border-radius: 20px 20px 0 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <!-- =========================
+       SPLASH
+  ========================= -->
+
+  <div id="splash">
+
+    <div class="splash-logo">🌌</div>
+
+    <div class="splash-title">
+      Galaxy
+    </div>
+
+    <div class="splash-subtitle">
+      Explore Your Universe
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       ONBOARDING
+  ========================= -->
+
+  <section id="onboarding" class="screen active onboarding">
+
+    <div class="container">
+
+      <div class="planet">
+        🌌
+      </div>
+
+      <h1>
+        مرحبًا بك في
+        <span class="gradient-text">
+          Galaxy
+        </span>
+      </h1>
+
+      <p class="description">
+        عالم جديد للتواصل واكتشاف الأشخاص
+        ومشاركة لحظاتك في تجربة اجتماعية مختلفة.
+      </p>
+
+      <div class="dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+
+      <button class="btn" onclick="goToLogin()">
+        ابدأ الآن 🚀
+      </button>
+
+      <button class="btn secondary" onclick="goToLogin()">
+        تخطي
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       LOGIN
+  ========================= -->
+
+  <section id="login" class="screen auth">
+
+    <div class="container">
+
+      <div class="auth-logo">
+
+        <div class="mini-logo">
+          🌌
+        </div>
+
+        <h1>
+          <span class="gradient-text">
+            Galaxy
+          </span>
+        </h1>
+
+        <p>
+          مرحبًا بعودتك 👋
+        </p>
+
+      </div>
+
+      <div class="auth-card">
+
+        <h2>
+          تسجيل الدخول
+        </h2>
+
+        <p>
+          ادخل إلى مجرتك مرة أخرى
+        </p>
+
+        <div class="input-group">
+
+          <label>
+            البريد الإلكتروني
+          </label>
+
+          <input
+            id="loginEmail"
+            class="input"
+            type="email"
+            placeholder="example@email.com"
+          >
+
+        </div>
+
+        <div class="input-group">
+
+          <label>
+            كلمة المرور
+          </label>
+
+          <input
+            id="loginPassword"
+            class="input"
+            type="password"
+            placeholder="••••••••"
+          >
+
+        </div>
+
+        <button class="btn" onclick="login()">
+          دخول 🚀
+        </button>
+
+        <div class="auth-switch">
+
+          ليس لديك حساب؟
+
+          <span onclick="showScreen('signup')">
+            إنشاء حساب
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       SIGN UP
+  ========================= -->
+
+  <section id="signup" class="screen auth">
+
+    <div class="container">
+
+      <div class="auth-logo">
+
+        <div class="mini-logo">
+          🌌
+        </div>
+
+        <h1>
+          إنشاء حساب
+        </h1>
+
+        <p>
+          ابدأ رحلتك في Galaxy ✨
+        </p>
+
+      </div>
+
+      <div class="auth-card">
+
+        <div class="input-group">
+
+          <label>
+            الاسم
+          </label>
+
+          <input
+            id="signupName"
+            class="input"
+            type="text"
+            placeholder="اسمك"
+          >
+
+        </div>
+
+        <div class="input-group">
+
+          <label>
+            البريد الإلكتروني
+          </label>
+
+          <input
+            id="signupEmail"
+            class="input"
+            type="email"
+            placeholder="example@email.com"
+          >
+
+        </div>
+
+        <div class="input-group">
+
+          <label>
+            كلمة المرور
+          </label>
+
+          <input
+            id="signupPassword"
+            class="input"
+            type="password"
+            placeholder="أنشئ كلمة مرور"
+          >
+
+        </div>
+
+        <button class="btn" onclick="signup()">
+          إنشاء الحساب ✨
+        </button>
+
+        <div class="auth-switch">
+
+          لديك حساب بالفعل؟
+
+          <span onclick="showScreen('login')">
+            تسجيل الدخول
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       HOME
+  ========================= -->
+
+  <section id="home" class="screen">
+
+    <div class="container">
+
+      <div class="topbar">
+
+        <div class="galaxy-title">
+          🌌 Galaxy
+        </div>
+
+        <div class="top-actions">
+
+          <button
+            class="circle-btn"
+            onclick="toast('لا توجد إشعارات جديدة')"
+          >
+            🔔
+          </button>
+
+          <button
+            class="circle-btn"
+            onclick="showScreen('messages')"
+          >
+            💬
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- STORIES -->
+
+      <div class="stories">
+
+        <div class="story">
+
+          <div class="story-avatar">
+            <div class="story-avatar-inner">
+              ＋
+            </div>
+          </div>
+
+          قصتك
+
+        </div>
+
+        <div class="story">
+
+          <div class="story-avatar">
+            <div class="story-avatar-inner">
+              👩
+            </div>
+          </div>
+
+          Sara
+
+        </div>
+
+        <div class="story">
+
+          <div class="story-avatar">
+            <div class="story-avatar-inner">
+              👨
+            </div>
+          </div>
+
+          Ahmed
+
+        </div>
+
+        <div class="story">
+
+          <div class="story-avatar">
+            <div class="story-avatar-inner">
+              👩
+            </div>
+          </div>
+
+          Esraa
+
+        </div>
+
+        <div class="story">
+
+          <div class="story-avatar">
+            <div class="story-avatar-inner">
+              🧑
+            </div>
+          </div>
+
+          Omar
+
+        </div>
+
+      </div>
+
+
+      <!-- POST -->
+
+      <article class="post">
+
+        <div class="post-head">
+
+          <div class="avatar">
+            👤
+          </div>
+
+          <div>
+
+            <div class="post-name">
+              Galaxy User
+            </div>
+
+            <div class="post-time">
+              منذ 10 دقائق
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="post-image">
+          🌌
+        </div>
+
+        <div class="post-text">
+          استكشف عالمك، شارك لحظاتك،
+          وابنِ مجرتك الخاصة. 🚀
+        </div>
+
+        <div class="post-actions">
+
+          <span
+            class="action"
+            onclick="likePost(this)"
+          >
+            ❤️ 128
+          </span>
+
+          <span
+            class="action"
+            onclick="toast('التعليقات قريبًا 💬')"
+          >
+            💬 24
+          </span>
+
+          <span
+            class="action"
+            onclick="toast('تمت المشاركة 🚀')"
+          >
+            🚀 مشاركة
+          </span>
+
+          <span
+            class="action"
+            onclick="toast('تم الحفظ 🔖')"
+          >
+            🔖
+          </span>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       SEARCH
+  ========================= -->
+
+  <section id="search" class="screen">
+
+    <div class="container">
+
+      <div class="topbar">
+
+        <h2>
+          البحث 🔍
+        </h2>
+
+      </div>
+
+      <div class="search-box">
+
+        🔍
+
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="ابحث عن أشخاص..."
+          oninput="searchUsers()"
+        >
+
+      </div>
+
+      <div id="searchResults">
+
+        <div class="search-result">
+
+          <div class="result-avatar">
+            👩
+          </div>
+
+          <div class="result-info">
+
+            <strong>
+              Sara
+            </strong>
+
+            <br>
+
+            <small>
+              @sara
+            </small>
+
+          </div>
+
+        </div>
+
+        <div class="search-result">
+
+          <div class="result-avatar">
+            👩
+          </div>
+
+          <div class="result-info">
+
+            <strong>
+              Esraa
+            </strong>
+
+            <br>
+
+            <small>
+              @esraa
+            </small>
+
+          </div>
+
+        </div>
+
+        <div class="search-result">
+
+          <div class="result-avatar">
+            👨
+          </div>
+
+          <div class="result-info">
+
+            <strong>
+              Ahmed
+            </strong>
+
+            <br>
+
+            <small>
+              @ahmed
+            </small>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       REELS
+  ========================= -->
+
+  <section id="reels" class="screen">
+
+    <div class="container">
+
+      <div class="topbar">
+
+        <h2>
+          Reels 🎬
+        </h2>
+
+      </div>
+
+      <div class="reel">
+
+        <div class="reel-content">
+
+          <div class="reel-user">
+            @galaxy_user
+          </div>
+
+          <div class="reel-description">
+            اكتشف مجرتك الخاصة 🌌✨
+          </div>
+
+        </div>
+
+        <div class="reel-actions">
+
+          <div
+            class="reel-action"
+            onclick="toast('أعجبك الفيديو ❤️')"
+          >
+            ❤️
+          </div>
+
+          <div
+            class="reel-action"
+            onclick="toast('التعليقات قريبًا 💬')"
+          >
+            💬
+          </div>
+
+          <div
+            class="reel-action"
+            onclick="toast('تمت المشاركة 🚀')"
+          >
+            🚀
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       MESSAGES
+  ========================= -->
+
+  <section id="messages" class="screen">
+
+    <div class="container">
+
+      <div class="topbar">
+
+        <h2>
+          الرسائل 💬
+        </h2>
+
+        <button
+          class="circle-btn"
+          onclick="toast('البحث في الرسائل قريبًا')"
+        >
+          🔍
+        </button>
+
+      </div>
+
+
+      <div class="message">
+
+        <div class="message-avatar">
+          👩
+        </div>
+
+        <div class="message-info">
+
+          <div class="message-name">
+            <span class="online"></span>
+            Sara
+          </div>
+
+          <div class="message-last">
+            أهلاً بك في Galaxy 👋
+          </div>
+
+        </div>
+
+        <small>
+          الآن
+        </small>
+
+      </div>
+
+
+      <div class="message">
+
+        <div class="message-avatar">
+          👩
+        </div>
+
+        <div class="message-info">
+
+          <div class="message-name">
+            Esraa
+          </div>
+
+          <div class="message-last">
+            صورة جديدة 📷
+          </div>
+
+        </div>
+
+        <small>
+          10د
+        </small>
+
+      </div>
+
+
+      <div class="message">
+
+        <div class="message-avatar">
+          👨
+        </div>
+
+        <div class="message-info">
+
+          <div class="message-name">
+            Ahmed
+          </div>
+
+          <div class="message-last">
+            تمام 👍
+          </div>
+
+        </div>
+
+        <small>
+          1س
+        </small>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       PROFILE
+  ========================= -->
+
+  <section id="profile" class="screen">
+
+    <div class="container">
+
+      <div class="topbar">
+
+        <h2>
+          الملف الشخصي
+        </h2>
+
+        <button
+          class="circle-btn"
+          onclick="showScreen('settings')"
+        >
+          ⚙️
+        </button>
+
+      </div>
+
+
+      <div class="profile-header">
+
+        <div class="profile-avatar">
+
+          <div class="profile-avatar-inner">
+            👤
+          </div>
+
+        </div>
+
+        <div class="profile-name">
+          Galaxy User
+        </div>
+
+        <div class="profile-username">
+          @galaxy_user
+        </div>
+
+        <div class="profile-bio">
+          أعيش في مجرتي الخاصة 🌌
+          <br>
+          Explore • Create • Connect 🚀
+        </div>
+
+        <div class="profile-stats">
+
+          <div class="stat">
+            <strong>12</strong>
+            <span>منشور</span>
+          </div>
+
+          <div class="stat">
+            <strong>248</strong>
+            <span>متابع</span>
+          </div>
+
+          <div class="stat">
+            <strong>180</strong>
+            <span>يتابع</span>
+          </div>
+
+        </div>
+
+        <button
+          class="profile-btn"
+          onclick="toast('تعديل الملف الشخصي قريبًا ✨')"
+        >
+          تعديل الملف الشخصي
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       SETTINGS
+  ========================= -->
+
+  <section id="settings" class="screen">
+
+    <div class="container">
+
+      <div class="topbar">
+
+        <button
+          class="circle-btn"
+          onclick="showScreen('profile')"
+        >
+          ←
+        </button>
+
+        <h2>
+          الإعدادات ⚙️
+        </h2>
+
+        <div style="width:42px"></div>
+
+      </div>
+
+
+      <div class="setting">
+
+        <div class="setting-icon">
+          🔔
+        </div>
+
+        <div class="setting-info">
+
+          <strong>
+            الإشعارات
+          </strong>
+
+          <small>
+            إدارة إشعارات Galaxy
+          </small>
+
+        </div>
+
+        <span>
+          ›
+        </span>
+
+      </div>
+
+
+      <div class="setting">
+
+        <div class="setting-icon">
+          🔒
+        </div>
+
+        <div class="setting-info">
+
+          <strong>
+            الخصوصية
+          </strong>
+
+          <small>
+            التحكم في خصوصية حسابك
+          </small>
+
+        </div>
+
+        <span>
+          ›
+        </span>
+
+      </div>
+
+
+      <div class="setting">
+
+        <div class="setting-icon">
+          🎨
+        </div>
+
+        <div class="setting-info">
+
+          <strong>
+            المظهر
+          </strong>
+
+          <small>
+            الوضع الداكن
+          </small>
+
+        </div>
+
+        <span>
+          ✓
+        </span>
+
+      </div>
+
+
+      <div
+        class="setting"
+        onclick="logout()"
+      >
+
+        <div class="setting-icon">
+          🚪
+        </div>
+
+        <div class="setting-info">
+
+          <strong>
+            تسجيل الخروج
+          </strong>
+
+          <small>
+            الخروج من حساب Galaxy
+          </small>
+
+        </div>
+
+        <span>
+          ›
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       BOTTOM NAVIGATION
+  ========================= -->
+
+  <nav id="bottomNav" class="bottom-nav">
+
+    <div
+      class="nav-item active"
+      data-screen="home"
+      onclick="showScreen('home')"
+    >
+      <span>🏠</span>
+      الرئيسية
+    </div>
+
+
+    <div
+      class="nav-item"
+      data-screen="search"
+      onclick="showScreen('search')"
+    >
+      <span>🔍</span>
+      بحث
+    </div>
+
+
+    <div
+      class="create-btn"
+      onclick="toast('إنشاء منشور قريبًا ✨')"
+    >
+      ＋
+    </div>
+
+
+    <div
+      class="nav-item"
+      data-screen="reels"
+      onclick="showScreen('reels')"
+    >
+      <span>🎬</span>
+      Reels
+    </div>
+
+
+    <div
+      class="nav-item"
+      data-screen="profile"
+      onclick="showScreen('profile')"
+    >
+      <span>👤</span>
+      الملف
+    </div>
+
+  </nav>
+
+
+  <!-- TOAST -->
+
+  <div id="toast" class="toast"></div>
+
+</div>
+
+
+<script>
+
+  /* =========================
+     SPLASH
+  ========================= */
+
+  window.addEventListener("load", function () {
+
+    setTimeout(function () {
+
+      const splash =
+        document.getElementById("splash");
+
+      splash.classList.add("hide");
+
+    }, 1800);
+
+  });
+
+
+  /* =========================
+     SCREEN NAVIGATION
+  ========================= */
+
+  function showScreen(screenId) {
+
+    const screens =
+      document.querySelectorAll(".screen");
+
+    screens.forEach(function (screen) {
+
+      screen.classList.remove("active");
+
+    });
+
+
+    const target =
+      document.getElementById(screenId);
+
+    if (target) {
+
+      target.classList.add("active");
+
+    }
+
+
+    const bottomNav =
+      document.getElementById("bottomNav");
+
+
+    const authScreens =
+      ["onboarding", "login", "signup"];
+
+
+    if (authScreens.includes(screenId)) {
+
+      bottomNav.classList.remove("show");
+
+    } else {
+
+      bottomNav.classList.add("show");
+
+    }
+
+
+    const navItems =
+      document.querySelectorAll(".nav-item");
+
+
+    navItems.forEach(function (item) {
+
+      item.classList.remove("active");
+
+      if (
+        item.dataset.screen === screenId
+      ) {
+
+        item.classList.add("active");
+
+      }
+
+    });
+
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+  }
+
+
+  /* =========================
+     ONBOARDING
+  ========================= */
+
+  function goToLogin() {
+
+    showScreen("login");
+
+  }
+
+
+  /* =========================
+     LOGIN
+  ========================= */
+
+  function login() {
+
+    const email =
+      document.getElementById("loginEmail").value.trim();
+
+    const password =
+      document.getElementById("loginPassword").value.trim();
+
+
+    if (!email || !password) {
+
+      toast("اكتب البريد وكلمة المرور أولاً");
+
+      return;
+
+    }
+
+
+    toast("تم تسجيل الدخول بنجاح 🚀");
+
+
+    setTimeout(function () {
+
+      showScreen("home");
+
+    }, 700);
+
+  }
+
+
+  /* =========================
+     SIGN UP
+  ========================= */
+
+  function signup() {
+
+    const name =
+      document.getElementById("signupName").value.trim();
+
+    const email =
+      document.getElementById("signupEmail").value.trim();
+
+    const password =
+      document.getElementById("signupPassword").value.trim();
+
+
+    if (!name || !email || !password) {
+
+      toast("أكمل جميع البيانات أولاً");
+
+      return;
+
+    }
+
+
+    toast("تم إنشاء حسابك بنجاح ✨");
+
+
+    setTimeout(function () {
+
+      showScreen("home");
+
+    }, 700);
+
+  }
+
+
+  /* =========================
+     LIKE
+  ========================= */
+
+  function likePost(element) {
+
+    element.classList.toggle("liked");
+
+    if (
+      element.classList.contains("liked")
+    ) {
+
+      element.innerHTML = "❤️ 129";
+
+    } else {
+
+      element.innerHTML = "❤️ 128";
+
+    }
+
+  }
+
+
+  /* =========================
+     SEARCH
+  ========================= */
+
+  function searchUsers() {
+
+    const query =
+      document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase()
+        .trim();
+
+
+    const results =
+      document.querySelectorAll(
+        ".search-result"
+      );
+
+
+    results.forEach(function (result) {
+
+      const text =
+        result.innerText.toLowerCase();
+
+
+      if (
+        !query ||
+        text.includes(query)
+      ) {
+
+        result.style.display = "flex";
+
+      } else {
+
+        result.style.display = "none";
+
+      }
+
+    });
+
+  }
+
+
+  /* =========================
+     TOAST
+  ========================= */
+
+  let toastTimer;
+
+
+  function toast(message) {
+
+    const element =
+      document.getElementById("toast");
+
+
+    element.textContent = message;
+
+    element.classList.add("show");
+
+
+    clearTimeout(toastTimer);
+
+
+    toastTimer = setTimeout(function () {
+
+      element.classList.remove("show");
+
+    }, 2200);
+
+  }
+
+
+  /* =========================
+     LOGOUT
+  ========================= */
+
+  function logout() {
+
+    toast("تم تسجيل الخروج");
+
+    setTimeout(function () {
+
+      showScreen("login");
+
+    }, 700);
+
+  }
+
+</script>
+
+</body>
+</html>
